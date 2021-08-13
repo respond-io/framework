@@ -638,9 +638,9 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Get the values of a given key.
      *
-     * @param  string|array|int|null  $value
+     * @param  string|array<int, string>  $value
      * @param  string|null  $key
-     * @return static
+     * @return static<int, mixed>
      */
     public function pluck($value, $key = null)
     {
@@ -937,8 +937,8 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Recursively replace the collection items with the given items.
      *
-     * @param  mixed  $items
-     * @return static
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>  $items
+     * @return static<TKey, TValue>
      */
     public function replaceRecursive($items)
     {
@@ -948,7 +948,7 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Reverse items order.
      *
-     * @return static
+     * @return static<TKey, TValue>
      */
     public function reverse()
     {
@@ -958,9 +958,9 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Search the collection for a given value and return the corresponding key if successful.
      *
-     * @param  mixed  $value
+     * @param  TValue|callable(TValue,TKey): bool  $value
      * @param  bool  $strict
-     * @return mixed
+     * @return TKey|bool
      */
     public function search($value, $strict = false)
     {
@@ -1002,7 +1002,7 @@ class Collection implements ArrayAccess, Enumerable
      * Shuffle the items in the collection.
      *
      * @param  int|null  $seed
-     * @return static
+     * @return static<TKey, TValue>
      */
     public function shuffle($seed = null)
     {
@@ -1029,7 +1029,7 @@ class Collection implements ArrayAccess, Enumerable
      * Skip the first {$count} items.
      *
      * @param  int  $count
-     * @return static
+     * @return static<TKey, TValue>
      */
     public function skip($count)
     {
@@ -1039,8 +1039,8 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Skip items in the collection until the given condition is met.
      *
-     * @param  mixed  $value
-     * @return static
+     * @param  TValue|callable(TValue,TKey): bool  $value
+     * @return static<TKey, TValue>
      */
     public function skipUntil($value)
     {
@@ -1050,8 +1050,8 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Skip items in the collection while the given condition is met.
      *
-     * @param  mixed  $value
-     * @return static
+     * @param  TValue|callable(TValue,TKey): bool  $value
+     * @return static<TKey, TValue>
      */
     public function skipWhile($value)
     {
@@ -1063,7 +1063,7 @@ class Collection implements ArrayAccess, Enumerable
      *
      * @param  int  $offset
      * @param  int|null  $length
-     * @return static
+     * @return static<TKey, TValue>
      */
     public function slice($offset, $length = null)
     {
@@ -1074,7 +1074,7 @@ class Collection implements ArrayAccess, Enumerable
      * Split a collection into a certain number of groups.
      *
      * @param  int  $numberOfGroups
-     * @return static
+     * @return static<int, static<int, TValue>>
      */
     public function split($numberOfGroups)
     {
@@ -1121,10 +1121,10 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Get the first item in the collection, but only if exactly one item exists. Otherwise, throw an exception.
      *
-     * @param  mixed  $key
-     * @param  mixed  $operator
-     * @param  mixed  $value
-     * @return mixed
+     * @param  (callable(TValue, TKey): bool)|string  $key
+     * @param  TValue|string|null  $operator
+     * @param  TValue|null  $value
+     * @return TValue
      *
      * @throws \Illuminate\Collections\ItemNotFoundException
      * @throws \Illuminate\Collections\MultipleItemsFoundException
@@ -1152,7 +1152,7 @@ class Collection implements ArrayAccess, Enumerable
      * Chunk the collection into chunks of the given size.
      *
      * @param  int  $size
-     * @return static
+     * @return static<int, static<int, TValue>>
      */
     public function chunk($size)
     {
@@ -1172,8 +1172,8 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Chunk the collection into chunks with a callback.
      *
-     * @param  callable  $callback
-     * @return static
+     * @param  callable(TValue, TKey, static<int, TValue>): bool  $callback
+     * @return static<int, static<int, TValue>>
      */
     public function chunkWhile(callable $callback)
     {
@@ -1185,8 +1185,8 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Sort through each item with a callback.
      *
-     * @param  callable|int|null  $callback
-     * @return static
+     * @param  (callable(TValue, TValue): bool)|null|int  $callback
+     * @return static<TKey, TValue>
      */
     public function sort($callback = null)
     {
@@ -1203,7 +1203,7 @@ class Collection implements ArrayAccess, Enumerable
      * Sort items in descending order.
      *
      * @param  int  $options
-     * @return static
+     * @return static<TKey, TValue>
      */
     public function sortDesc($options = SORT_REGULAR)
     {
@@ -1217,10 +1217,10 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Sort the collection using the given callback.
      *
-     * @param  callable|array|string  $callback
+     * @param  (callable(TValue, TKey): mixed)|string  $callback
      * @param  int  $options
      * @param  bool  $descending
-     * @return static
+     * @return static<TKey, TValue>
      */
     public function sortBy($callback, $options = SORT_REGULAR, $descending = false)
     {
@@ -1299,9 +1299,9 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Sort the collection in descending order using the given callback.
      *
-     * @param  callable|string  $callback
+     * @param  (callable(TValue, TKey): mixed)|string  $callback
      * @param  int  $options
-     * @return static
+     * @return static<TKey, TValue>
      */
     public function sortByDesc($callback, $options = SORT_REGULAR)
     {
@@ -1313,7 +1313,7 @@ class Collection implements ArrayAccess, Enumerable
      *
      * @param  int  $options
      * @param  bool  $descending
-     * @return static
+     * @return static<TKey, TValue>
      */
     public function sortKeys($options = SORT_REGULAR, $descending = false)
     {
@@ -1328,7 +1328,7 @@ class Collection implements ArrayAccess, Enumerable
      * Sort the collection keys in descending order.
      *
      * @param  int  $options
-     * @return static
+     * @return static<TKey, TValue>
      */
     public function sortKeysDesc($options = SORT_REGULAR)
     {
@@ -1356,7 +1356,7 @@ class Collection implements ArrayAccess, Enumerable
      * Take the first or last {$limit} items.
      *
      * @param  int  $limit
-     * @return static
+     * @return static<TKey, TValue>
      */
     public function take($limit)
     {
@@ -1370,8 +1370,8 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Take items in the collection until the given condition is met.
      *
-     * @param  mixed  $value
-     * @return static
+     * @param  TValue|callable(TValue,TKey): bool  $value
+     * @return static<TKey, TValue>
      */
     public function takeUntil($value)
     {
@@ -1381,8 +1381,8 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Take items in the collection while the given condition is met.
      *
-     * @param  mixed  $value
-     * @return static
+     * @param  TValue|callable(TValue,TKey): bool  $value
+     * @return static<TKey, TValue>
      */
     public function takeWhile($value)
     {
@@ -1405,7 +1405,7 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Reset the keys on the underlying array.
      *
-     * @return static
+     * @return static<int, TValue>
      */
     public function values()
     {
@@ -1418,8 +1418,10 @@ class Collection implements ArrayAccess, Enumerable
      * e.g. new Collection([1, 2, 3])->zip([4, 5, 6]);
      *      => [[1, 4], [2, 5], [3, 6]]
      *
-     * @param  mixed  ...$items
-     * @return static
+     * @template TZipValue
+     *
+     * @param  \Illuminate\Contracts\Support\Arrayable<array-key, TZipValue>|iterable<array-key, TZipValue>  ...$items
+     * @return static<int, static<int, TValue|TZipValue>>
      */
     public function zip($items)
     {
@@ -1437,9 +1439,11 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Pad collection to the specified length with a value.
      *
+     * @template TPadValue
+     *
      * @param  int  $size
-     * @param  mixed  $value
-     * @return static
+     * @param  TPadValue  $value
+     * @return static<int, TValue|TPadValue>
      */
     public function pad($size, $value)
     {
@@ -1471,8 +1475,8 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Count the number of items in the collection by a field or using a callback.
      *
-     * @param  callable|string  $countBy
-     * @return static
+     * @param  (callable(TValue, TKey): mixed)|string|null  $countBy
+     * @return static<TValue, int>
      */
     public function countBy($countBy = null)
     {
