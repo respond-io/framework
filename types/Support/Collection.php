@@ -538,7 +538,6 @@ assertType('int', $collection
         return 1;
     }));
 
-
 assertType('int', $collection
     ->reduce(function ($int, $user) {
         assertType('User', $user);
@@ -551,9 +550,6 @@ assertType('Illuminate\Support\Collection<int, int>', $collection::make([1])->re
 assertType('Illuminate\Support\Collection<int, User>', $collection->replace([new User]));
 
 assertType('Illuminate\Support\Collection<int, int>', $collection->make([1])->push(2));
-
-
-
 
 assertType('array<int, User>', $collection->all());
 
