@@ -1,12 +1,11 @@
 {
-    "name": "laravel/framework",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "respond-io/framework",
+    "description": "The Overridden Laravel Framework.",
+    "keywords": ["framework", "respond"],
     "license": "MIT",
-    "homepage": "https://laravel.com",
+    "homepage": "https://respond.io",
     "support": {
-        "issues": "https://github.com/laravel/framework/issues",
-        "source": "https://github.com/laravel/framework"
+        "source": "https://github.com/respond-io/framework"
     },
     "authors": [
         {
