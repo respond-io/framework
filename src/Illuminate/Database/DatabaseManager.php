@@ -152,7 +152,7 @@ class DatabaseManager implements ConnectionResolverInterface
      */
     protected function configure(Connection $connection, $type)
     {
-        $connection = $this->setPdoForType($connection, $type);
+        $connection = $this->setPdoForType($connection, $type)->setType($type);
 
         // First we'll set the fetch mode and a few other dependencies of the database
         // connection. This method basically just configures and prepares it to get
@@ -165,7 +165,7 @@ class DatabaseManager implements ConnectionResolverInterface
         // so we will set a Closure to reconnect from this manager with the name of
         // the connection, which will allow us to reconnect from the connections.
         $connection->setReconnector(function ($connection) {
-            $this->reconnect($connection->getName());
+            $this->reconnect($connection->getFullName());
         });
 
         return $connection;
@@ -242,7 +242,11 @@ class DatabaseManager implements ConnectionResolverInterface
      */
     protected function refreshPdoConnections($name)
     {
-        $fresh = $this->makeConnection($name);
+        [$database, $type] = $this->parseConnectionName($name);
+
+        $fresh = $this->configure(
+            $this->makeConnection($database), $type
+        );
 
         return $this->connections[$name]
                                 ->setPdo($fresh->getPdo())

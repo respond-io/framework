@@ -151,6 +151,13 @@ class Connection implements ConnectionInterface
     protected static $resolvers = [];
 
     /**
+     * The type of the connection.
+     *
+     * @var string|null
+     */
+    protected $type;
+
+    /**
      * Create a new database connection instance.
      *
      * @param  \PDO|\Closure     $pdo
@@ -995,6 +1002,16 @@ class Connection implements ConnectionInterface
     }
 
     /**
+     * Get the database connection full name.
+     *
+     * @return string|null
+     */
+    public function getFullName()
+    {
+        return $this->getName().($this->type ? '::'.$this->type : '');
+    }
+
+    /**
      * Get an option from the configuration options.
      *
      * @param  string|null  $option
@@ -1199,6 +1216,20 @@ class Connection implements ConnectionInterface
 
         return $this;
     }
+
+    /**
+     * Set the type of the connection.
+     *
+     * @param  string  $type
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
 
     /**
      * Get the table prefix for the connection.
